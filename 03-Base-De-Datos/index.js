@@ -6,9 +6,28 @@ const api = express();
 const PORT = process.env.PORT || 3000;
 
 // Conexión a Base de Datos
-mongoose.connect('mongodb://cristian:abc123def@cintanegra-shard-00-00-aw02w.mongodb.net:27017,cintanegra-shard-00-01-aw02w.mongodb.net:27017,cintanegra-shard-00-02-aw02w.mongodb.net:27017/test?ssl=true&replicaSet=CintaNegra-shard-0&authSource=admin&retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => { console.log('database connected!') })
     .catch(() => { console.log('error trying to connect to database'); })
+
+// Generar un esquema -> definición de las reglas de una colección
+const flightsSchema = new mongoose.Schema({
+    airline: {
+        type: String,
+        required: true,
+    },
+    aircraft_name: {
+        type: String,
+        required: true,
+    },
+    aircraft_model: Number,
+    flight_from: {
+        type:String,
+        required: true,
+    }
+});
+
+// Generar un modelo a partir del esquema
 
 // Endpoints
 api.get('/', (req, res) => res.status(200).json({ message: "it's alive!!"}));
